@@ -1,8 +1,11 @@
 <?php
 
-use App\Models\Post;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use Spatie\Tags\Tag;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,43 +16,56 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+Auth::routes();
 
 Route::get('/', function () {
-    return view('home', [
-        "title" => "SMK GO"
+    return view('custom.pages.index', [
+        "title" => "SMK GO",
     ]);
-});
+})->name('home');
 
-Route::get('/posts', function () {
-    return view('posts', [
-        "title" => "Info SMK",
-        "posts" => Post::all()
-    ]);
-});
-
-Route::get('/about', function () {
-    return view('about', [
-        "title" => "About",
-        "name" => ["ferdi", "ariq", "reyka", "kaka"],
-        "img" => ["ferdi.jpg", "ariq.jpg", "reyka.jpg", "kaka.jpg"],
-        "job" => ["Web Developer"],
-        "describtion" => []
-    ]);
-});
+Route::get('schools', [SchoolController::class, 'index'])->name('schools.index');
 
 Route::get('/contact', function () {
     return view('contact');
 });
 
-// single post
-Route::get('posts/{slug}', function($slug) {
-    return view('post', [
-        "title" => "Single Post",
-        "post" => Post::find($slug)
+Route::resource('posts', PostController::class)->parameters([
+    'posts' => 'post:slug',
+]);
+
+Route::resource('users', UserController::class)->parameters([
+    'users' => 'user:username',
+]);
+
+Route::get('/dashboard', function () {
+    $createOrSearchTag = Tag::all()->toArray();
+    dd(collect($createOrSearchTag));
+})->middleware('auth')->name('dashboard');
+
+Route::post('/upload', function () {
+    $validate = request()->validate([
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ]);
-});
+
+    // check if uploaded file is an image
+    if ($validate) {
+        // get file name
+        $fileName = now()->timestamp . "_" . request()->file('image')->getClientOriginalName();
+        // move file to storage
+        request()->file('image')->storeAs('public/images', $fileName);
+        // return file name
+        return response()->json([
+            'url' => asset('storage/images/' . $fileName),
+        ]);
+    } else {
+        return response()->json(['error' => [
+            'message' => 'File is not valid!',
+        ]]);
+    }
+})->name('upload-image')->middleware('auth');

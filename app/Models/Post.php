@@ -2,37 +2,43 @@
 
 namespace App\Models;
 
+use BeyondCode\Comments\Traits\HasComments;
+use Conner\Likeable\Likeable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Tags\HasTags;
 
-class Post
+class Post extends Model
 {
-    private static $info_post = [
-        [
-            "title" => "SMK N 1 BANGSRI",
-            "slug" => "post-pertama",
-            "status" => "Negeri",
-            "alamat" => "Krasak",
-            "telp" => "087894573986",
-            "jurusan" => "RPL, TKJ, TBSM"
-        ],
-        [
-            "title" => "SMK N 1 BAWU",
-            "slug" => "post-kedua",
-            "status" => "Swasta",
-            "alamat" => "Bawu",
-            "telp" => "087894573986",
-            "jurusan" => "OTKP, BDP, TBSM"
-        ]
+    use HasFactory, HasTags, HasComments, Likeable;
+
+    protected $fillable = [
+        'title', 'slug', 'content', 'image', 'user_id',
     ];
 
-    public static function all()
+    protected $hidden = [
+        'user_id', 'id',
+    ];
+
+    // change timestamp created_at and updated_at to carbon human readable
+    public function getCreatedAtAttribute($value)
     {
-        return collect(self::$info_post);
+        return \Carbon\Carbon::parse($value)->diffForHumans();
     }
 
-    public static function find($slug)
+    public function getUpdatedAtAttribute($value)
     {
-        $posts = static::all();
+        return \Carbon\Carbon::parse($value)->diffForHumans();
+    }
 
-        return $posts->firstWhere('slug', $slug);
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // create method for attaching tags to a post
+    public function attachTags($tags)
+    {
+        $this->tags()->attach($tags);
     }
 }

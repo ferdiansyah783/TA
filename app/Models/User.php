@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +20,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'is_verified',
+        'username',
         'password',
     ];
 
@@ -29,6 +31,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
+        'id',
         'password',
         'remember_token',
     ];
@@ -41,4 +44,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // change timestamp created_at and updated_at to carbon human readable
+    public function getCreatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->diffForHumans();
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->diffForHumans();
+    }
+
+    public function getEmailVerifiedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->diffForHumans();
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }
