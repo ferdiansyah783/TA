@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Custom\Posts;
+namespace App\Http\Livewire\Custom\Pages\Posts;
 
 use App\Models\Post;
 use Livewire\Component;
@@ -24,7 +24,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.custom.posts.index', [
+        return view('livewire.custom.pages.posts.index', [
             'posts' => Post::with('user')->latest()->where('title', 'like', '%' . $this->search . '%')
                 ->orWhere('content', 'like', '%' . $this->search . '%')
             // also search by name of user

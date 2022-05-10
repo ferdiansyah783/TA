@@ -1,5 +1,5 @@
 @extends('layouts.custom')
 
 @section('content')
-    <livewire:custom.posts.index />
+    <livewire:custom.pages.posts.index />
 @endsection

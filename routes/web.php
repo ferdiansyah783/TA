@@ -1,11 +1,9 @@
 <?php
 
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\SchoolController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Spatie\Tags\Tag;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,23 +27,38 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('schools', [SchoolController::class, 'index'])->name('schools.index');
-
 Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::resource('posts', PostController::class)->parameters([
-    'posts' => 'post:slug',
-]);
+// Route::resource('posts', PostController::class)->parameters([
+//     'posts' => 'post:slug',
+// ]);
 
-Route::resource('users', UserController::class)->parameters([
-    'users' => 'user:username',
-]);
+// Route::resource('users', UserController::class)->parameters([
+//     'users' => 'user:username',
+// ]);
+
+/**
+ * Ini adalah route resources untuk
+ * CRUD data jurusan.
+ */
+Route::resource('jurusan', JurusanController::class)->parameters([
+    'jurusans' => 'jurusan:slug',
+])->only(['show']);
+
+/**
+ * Ini adalah route resources untuk
+ * CRUD data sekolah.
+ */
+Route::resource('sekolah', SchoolController::class)->parameters([
+    'schools' => 'sekolah:slug',
+])->only(['index', 'create', 'edit', 'show']);
 
 Route::get('/dashboard', function () {
-    $createOrSearchTag = Tag::all()->toArray();
-    dd(collect($createOrSearchTag));
+    return view('custom.pages.dashboard.index', [
+        "title" => "Dashboard",
+    ]);
 })->middleware('auth')->name('dashboard');
 
 Route::post('/upload', function () {
@@ -69,3 +82,9 @@ Route::post('/upload', function () {
         ]]);
     }
 })->name('upload-image')->middleware('auth');
+
+Route::get('/daftar-sekolah', function () {
+    return \view('custom.pages.schools', [
+        "title" => "Daftar Sekolah",
+    ]);
+})->name('daftar-sekolah');

@@ -14,11 +14,12 @@ class SchoolFactory extends Factory
     public function definition()
     {
         return [
+            'thumbnail' => $this->faker->imageUrl(),
             'name' => $this->faker->company,
+            'slug' => $this->faker->slug,
             'address' => $this->faker->address,
             'phone' => $this->faker->phoneNumber,
             'status' => $this->faker->randomElement(['swasta', 'negeri']),
-            'major' => $this->faker->randomElement(['IPA', 'IPS', 'IPC', 'IPB', 'IPD', 'RPL', 'TKJ']),
         ];
     }
 }

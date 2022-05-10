@@ -5,7 +5,11 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://unpkg.com/@yaireo/tagify"></script>
 <script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script> --}}
 
+<script>
+    //
+</script>
 
 @livewireScripts
 
