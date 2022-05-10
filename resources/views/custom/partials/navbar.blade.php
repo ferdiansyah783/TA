@@ -12,7 +12,8 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('dashboard') }}">DASHBOARD</a>
                     </li>
                 @endif
-                <li class="nav-item"><a class="nav-link" href="{{ route('schools.index') }}">INFO SMK</a>
+                <li class="nav-item"><a class="nav-link" href="{{ route('daftar-sekolah') }}">DAFTAR
+                        SMK</a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">CONTACT</a></li>
@@ -20,8 +21,8 @@
                         data-bs-toggle="dropdown" href="#">ACCOUNT</a>
                     <div class="dropdown-menu">
                         @if (Auth::check())
-                            <a class="dropdown-item"
-                                href="{{ route('users.show', Auth::user()->username) }}">Profile</a>
+                            {{-- <a class="dropdown-item"
+                                href="{{ route('users.show', Auth::user()->username) }}">Profile</a> --}}
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
 

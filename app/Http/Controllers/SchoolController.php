@@ -9,13 +9,20 @@ use App\Models\School;
 class SchoolController extends Controller
 {
     /**
+     *
+     */
+    public function __construct()
+    {
+        $this->middleware('auth')->only(['create', 'edit']);
+    }
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return \view('custom.pages.schools');
+        return \view('custom.pages.schools.index');
     }
 
     /**
@@ -25,7 +32,7 @@ class SchoolController extends Controller
      */
     public function create()
     {
-        //
+        return \view('pages.schools.create');
     }
 
     /**
@@ -82,5 +89,11 @@ class SchoolController extends Controller
     public function destroy(School $school)
     {
         //
+    }
+
+    // method for manyToMany relationship with Jurusan
+    public function jurusans()
+    {
+        return $this->belongsToMany(Jurusan::class);
     }
 }
