@@ -21,9 +21,9 @@
                             @foreach ($posts as $post)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $post['name'] }}</td>
+                                    <td><a href="{{ route('sekolah.show', $post['slug']) }}"
+                                            class="text-decoration-none">{{ $post['name'] }}</a></td>
                                     <td>{{ $post['status'] }}</td>
-                                    <td>{{ $post['major'] }}</td>
                                     <td>{{ $post['address'] }}</td>
                                     <td>{{ $post['phone'] }}</td>
                                 </tr>

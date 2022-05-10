@@ -9,7 +9,7 @@
 
     <div class="row gy-4 row-cols-1 row-cols-md-2">
 
-        @foreach ($posts as $post)
+        {{-- @foreach ($posts as $post)
             <div class="col">
                 <div class="d-flex flex-column flex-lg-row">
                     <div class="w-100"><img class="rounded img-fluid d-block w-100 fit-cover"
@@ -27,12 +27,17 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+        @endforeach --}}
 
+        <div class="col justify-content-center">
+            <h1 class="heading">Ini data jurusan</h1>
+        </div>
     </div>
 
     <div class="row justify-content-center align-items-center mt-4">
-        <div class="col text-center"><a class="btn btn-info btn-sm" href="{{ route('posts.index') }}"
-                role="button">Read more</a></div>
+        <div class="col text-center"><a class="btn btn-info btn-sm" href="{{ route('sekolah.index') }}"
+                role="button">Read
+                more</a>
+        </div>
     </div>
 </div>
